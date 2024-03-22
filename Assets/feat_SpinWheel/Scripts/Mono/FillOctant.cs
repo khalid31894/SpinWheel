@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class FillOctant : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI multiplier;
-    [SerializeField] Image image;
+    public TextMeshProUGUI multiplier;
+    public Image image;
+    public float probability;
     
 
 }

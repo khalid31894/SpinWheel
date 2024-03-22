@@ -1,24 +1,79 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpinWheelManager : MonoBehaviour
 {
-    [SerializeField] RewardsDataDTO rewardsDataDTO;
+    [SerializeField] private RewardsDataDTO rewardsDataDTO;
+    [SerializeField] private GameObject octantPrefab;
+    [SerializeField] private Transform parent;
 
-    [SerializeField] GameObject octant;
-    [SerializeField] Transform parent;
-    private void SpawnGrid()
+    private void Start()
     {
-        for (int i = 0; i < rewardsDataDTO.rewards.Length; i++) 
+        OctantSpawner octantSpawner = new OctantSpawner(rewardsDataDTO, octantPrefab, parent);
+        octantSpawner.SpawnGrid();
+    }
+}
+
+
+
+
+
+[System.Serializable]
+public class OctantSpawner
+{
+    private RewardsDataDTO rewardsDataDTO;
+    private GameObject octantPrefab;
+    private Transform parent;
+
+    public OctantSpawner(RewardsDataDTO rewardsDataDTO, GameObject octantPrefab, Transform parent)
+    {
+        this.rewardsDataDTO = rewardsDataDTO;
+        this.octantPrefab = octantPrefab;
+        this.parent = parent;
+    }
+
+    public void SpawnGrid()
+    {
+        if (rewardsDataDTO == null || octantPrefab == null || parent == null)
         {
-          GameObject instantiated_Octant =  Instantiate(octant, parent);
-          instantiated_Octant.transform.rotation = Quaternion.Euler(0, 0, i * 45);   // pi/8=22.5   delta=> 22.5*2 = 45 degree
+            Debug.LogError("Missing required components!");
+            return;
+        }
+
+        HexToColorConverter converter = new HexToColorConverter();
+
+        for (int i = 0; i < rewardsDataDTO.rewards.Length; i++)
+        {
+            GameObject instantiatedOctant = GameObject.Instantiate(octantPrefab, parent);
+
+            FillOctant fillOctant_Cach = instantiatedOctant.GetComponent<FillOctant>();
+
+            fillOctant_Cach.image.color = converter.HexToColor(rewardsDataDTO.rewards[i].color);
+            fillOctant_Cach.multiplier.text = rewardsDataDTO.rewards[i].multiplier.ToString(); 
+            fillOctant_Cach.probability = rewardsDataDTO.rewards[i].probability;
+
+            instantiatedOctant.transform.rotation = Quaternion.Euler(0, 0, i * 45);
 
         }
     }
-    private void Start()
+}
+
+[System.Serializable]
+public class HexToColorConverter
+{
+    public Color HexToColor(string hex)
     {
-        SpawnGrid();
+      
+        hex = hex.Replace("#", "");   // Remove # if present
+
+        // Parse hex values
+        float r = int.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber) / 255f;
+        float g = int.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber) / 255f;
+        float b = int.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber) / 255f;
+
+        // Create Color object
+        Color color = new Color(r, g, b);
+
+        return color;
     }
 }
+
