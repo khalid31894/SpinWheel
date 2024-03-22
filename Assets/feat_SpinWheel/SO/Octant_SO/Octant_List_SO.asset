@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08cff5f95b597704c8238b7aa8ff1119, type: 3}
+  m_Name: Octant_List_SO
+  m_EditorClassIdentifier: 
+  octant_SOs:
+  - {fileID: 11400000, guid: 61b1babda2e2e0a469518955c30e5c65, type: 2}
+  - {fileID: 11400000, guid: 498c923e34b15ae4db09d2a82531bb03, type: 2}
+  - {fileID: 11400000, guid: dd893044575794a45838a185dfab302f, type: 2}
+  - {fileID: 11400000, guid: 93090eed1a229384da65a828735fdf82, type: 2}
+  - {fileID: 11400000, guid: b5713e0a88fe73f479d47a1635cb4beb, type: 2}
+  - {fileID: 11400000, guid: 0451249a35247f84fb8162fdb1139d70, type: 2}
+  - {fileID: 11400000, guid: 6d6f887ec90e4cf4794ebe4a92770c8b, type: 2}
+  - {fileID: 11400000, guid: c8ce0f17b60dbd141ab1c48480f7df2c, type: 2}
