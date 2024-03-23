@@ -51,7 +51,7 @@ public class OctantSpawner
             fillOctant_Cach.multiplier.text = rewardsDataDTO.rewards[i].multiplier.ToString(); 
             fillOctant_Cach.probability = rewardsDataDTO.rewards[i].probability;
 
-            instantiatedOctant.transform.rotation = Quaternion.Euler(0, 0, i * 45);
+            instantiatedOctant.transform.rotation = Quaternion.Euler(0, 0, i * 45);   // anglr/octant => 2pi/8=45 
 
         }
     }
