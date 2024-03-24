@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.ConstrainedExecution;
-using System.Threading;
+
 using UnityEngine;
 
 public class RotateWheel : MonoBehaviour
@@ -24,35 +22,32 @@ public class RotateWheel : MonoBehaviour
     {
         anglePerOctant = 360f / rewardsDataDTO.rewards.Count;
 
-         updateUIs = new UpdateUIs(rewardsDataDTO, rewardAndMultiplier_SO);
+        updateUIs = new UpdateUIs(rewardsDataDTO, rewardAndMultiplier_SO);
 
     }
 
     private void OnEnable()
     {
         rotate_Action += Rotate;
-       // onComplete_Action += OnComplete;
     }
 
     private void OnDisable()
     {
         rotate_Action -= Rotate;
-        //onComplete_Action -= OnComplete;
-
     }
 
     private void Rotate(int desiredOctant, float spinTime, float revolutions, bool isClockwise, AnimationCurve curve)
     {
-        
+        transform.eulerAngles = new Vector3(0,0,0); //Fresh Start on every spin
 
         if (!isSpinning)
         {
             float maxAngle = revolutions * 360f + desiredOctant * anglePerOctant;
-            rotationCoroutine = StartCoroutine(RotateCor(desiredOctant,spinTime, maxAngle, isClockwise, curve));
+            rotationCoroutine = StartCoroutine(RotateCor(desiredOctant, spinTime, maxAngle, isClockwise, curve));
         }
     }
 
-    private IEnumerator RotateCor(int desiredOctant,float spinTime, float maxAngle, bool isClockwise, AnimationCurve curve)
+    private IEnumerator RotateCor(int desiredOctant, float spinTime, float maxAngle, bool isClockwise, AnimationCurve curve)
     {
         isSpinning = true;
         float startAngle = transform.eulerAngles.z;
@@ -64,7 +59,7 @@ public class RotateWheel : MonoBehaviour
             float currentAngle = startAngle + (isClockwise ? angle : -angle);
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, currentAngle);
             timer += Time.deltaTime;
-            yield return null;
+            yield return null;  //on yiled give control back to unity for smoother process
         }
 
         float endAngle = startAngle + (isClockwise ? maxAngle : -maxAngle);
@@ -85,8 +80,8 @@ public class RotateWheel : MonoBehaviour
 
 }
 
-[System. Serializable]
-public class UpdateUIs 
+[System.Serializable]
+public class UpdateUIs
 {
 
     private RewardsDataDTO rewardsDataDTO;
@@ -97,17 +92,12 @@ public class UpdateUIs
         this.rewardMultiplier_SO = rewardMultiplier_SO;
     }
 
-
-    
     public void Update_rewardMultiplier_SO(int finalOctate)
     {
-        rewardMultiplier_SO.multiplier= rewardsDataDTO.rewards[7-finalOctate].multiplier;
+        rewardMultiplier_SO.multiplier = rewardsDataDTO.rewards[7 - finalOctate].multiplier;
         rewardMultiplier_SO.TotalScore += (rewardsDataDTO.rewards[7 - finalOctate].multiplier * rewardMultiplier_SO.TotalScore);
 
     }
 
-    
-    
-    
-
 }
+

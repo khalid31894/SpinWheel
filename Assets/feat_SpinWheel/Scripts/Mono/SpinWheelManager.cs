@@ -48,7 +48,7 @@ public class OctantSpawner
             FillOctant fillOctant_Cach = instantiatedOctant.GetComponent<FillOctant>();
 
             fillOctant_Cach.image.color = converter.HexToColor(rewardsDataDTO.rewards[i].color);
-            fillOctant_Cach.multiplier.text = rewardsDataDTO.rewards[i].multiplier.ToString(); 
+            fillOctant_Cach.multiplier.text = rewardsDataDTO.rewards[i].multiplier.ToString();
             fillOctant_Cach.probability = rewardsDataDTO.rewards[i].probability;
 
             instantiatedOctant.transform.rotation = Quaternion.Euler(0, 0, i * 45);   // ---->  anglr/octant => 2pi/8 = 45 
@@ -62,15 +62,13 @@ public class HexToColorConverter
 {
     public Color HexToColor(string hex)
     {
-      
-        hex = hex.Replace("#", "");   // Remove # if present
 
-        // Parse hex values
+        hex = hex.Replace("#", "");
+
         float r = int.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber) / 255f;
         float g = int.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber) / 255f;
         float b = int.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber) / 255f;
 
-        // Create Color object
         Color color = new Color(r, g, b);
 
         return color;

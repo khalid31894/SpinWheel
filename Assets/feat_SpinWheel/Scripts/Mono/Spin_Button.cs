@@ -19,11 +19,6 @@ public class Spin_Button : MonoBehaviour, IButton
     [SerializeField]  private   bool   isClockWise=false ;
     [SerializeField]  private AnimationCurve curve    ;
 
-   // [SerializeField] private FloatReference Octant;
-    
-
-
-    //isProbabiltyBased? ProbabilityBasedOctant.getProbabiltyBasedOctate_Action():desiredOctant
 
     private void Start()
     {

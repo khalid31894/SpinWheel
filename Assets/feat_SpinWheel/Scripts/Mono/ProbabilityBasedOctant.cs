@@ -16,13 +16,12 @@ public class ProbabilityBasedOctant : MonoBehaviour
     }
     private void OnDisable()
     {
-        getProbabiltyBasedOctate_Action -=GetProbabilityBasedOctate;
+        getProbabiltyBasedOctate_Action -= GetProbabilityBasedOctate;
     }
     private int GetProbabilityBasedOctate()
     {
         float totalProbability = 0f;
 
-        // Calculate total probability
         foreach (var reward in rewardsDataDTO.rewards)
         {
             totalProbability += reward.probability;
@@ -31,7 +30,6 @@ public class ProbabilityBasedOctant : MonoBehaviour
         float randomValue = UnityEngine.Random.Range(0f, totalProbability);
         float cumulativeProbability = 0f;
 
-        // Select reward based on random value
         for (int i = 0; i < rewardsDataDTO.rewards.Count; i++)
         {
             cumulativeProbability += rewardsDataDTO.rewards[i].probability;
@@ -39,7 +37,7 @@ public class ProbabilityBasedOctant : MonoBehaviour
             {
                 Debug.LogWarning("ProbabilityBasedOctate.value= " + i);
 
-                return 7-i;  //7 maps rewards on spin wheel => Grid octant:SO Index    0=7 1=6 2=5 3=4 ...
+                return 7 - i;  //7 maps rewards on spin wheel => Grid octant:SO Index    0=7 1=6 2=5 3=4 ...
             }
         }
 
