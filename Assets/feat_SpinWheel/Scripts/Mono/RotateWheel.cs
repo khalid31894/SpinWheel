@@ -7,59 +7,57 @@ using UnityEngine;
 public class RotateWheel : MonoBehaviour
 {
     [SerializeField] RewardsDataDTO rewardsDataDTO;
-    public static Action<int,float, float> rotate_Action;
 
-    public List<AnimationCurve> animationCurves;
+    public static Action<int, float, float, bool, AnimationCurve> rotate_Action;
 
-
-    private float timer;
     private float anglePerOctant;
     private bool isSpinning;
-
-
+    private Coroutine rotationCoroutine;
 
     private void Awake()
     {
-        anglePerOctant = (float)360 / (float)rewardsDataDTO.rewards.Count;
+        anglePerOctant = 360f / rewardsDataDTO.rewards.Count;
     }
+
     private void OnEnable()
     {
         rotate_Action += Rotate;
     }
+
     private void OnDisable()
     {
         rotate_Action -= Rotate;
     }
 
-    private void Rotate(int desiredOctant, float spinTime, float revolutions)
+    private void Rotate(int desiredOctant, float spinTime, float revolutions, bool isClockwise, AnimationCurve curve)
     {
-        timer = 0.0f;
-      
-        float maxAngle = 360 * revolutions - (desiredOctant * anglePerOctant);
-        if (!isSpinning) 
-        { 
-            StartCoroutine(RotateCor(spinTime, maxAngle));
+        if (!isSpinning)
+        {
+            float maxAngle = revolutions * 360f + desiredOctant * anglePerOctant;
+            rotationCoroutine = StartCoroutine(RotateCor(spinTime, maxAngle, isClockwise, curve));
         }
-
     }
 
-    IEnumerator RotateCor(float spinTime, float maxAngle)
+    private IEnumerator RotateCor(float spinTime, float maxAngle, bool isClockwise, AnimationCurve curve)
     {
         isSpinning = true;
         float startAngle = transform.eulerAngles.z;
-        maxAngle -= startAngle;
-        int animationCurveIndex = UnityEngine.Random.Range(0, animationCurves.Count);
 
+        float timer = 0f;
         while (timer < spinTime)
         {
-            float angle = maxAngle * animationCurves[animationCurveIndex].Evaluate(timer / spinTime);
-            transform.eulerAngles = -new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, angle + startAngle);
+            float angle = maxAngle * curve.Evaluate(timer / spinTime);
+            float currentAngle = startAngle + (isClockwise ? angle : -angle);
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, currentAngle);
             timer += Time.deltaTime;
             yield return null;
         }
 
-        transform.eulerAngles = -new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, maxAngle + startAngle);
+        float endAngle = startAngle + (isClockwise ? maxAngle : -maxAngle);
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, endAngle);
+
         isSpinning = false;
+        
 
 
     }
