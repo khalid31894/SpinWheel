@@ -31,6 +31,8 @@ public class RotateWheel : MonoBehaviour
 
     private void Rotate(int desiredOctant, float spinTime, float revolutions, bool isClockwise, AnimationCurve curve)
     {
+        
+
         if (!isSpinning)
         {
             float maxAngle = revolutions * 360f + desiredOctant * anglePerOctant;

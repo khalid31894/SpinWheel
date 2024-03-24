@@ -8,9 +8,12 @@ public class Spin_Button : MonoBehaviour, IButton
 {
     private Button button;
 
+    [Tooltip("Final Octant will be calculated using probabilty proved in SO")]
     [SerializeField] private bool isProbabiltyBased;
 
-   [SerializeField]  private   int    desiredOctant  ;
+    [Tooltip("Octant 0 is placed on pointer, octant 2 is on the right")]
+    [SerializeField]  private   int    desiredOctant  ;
+
     [SerializeField]  private   float  spinTime       ;
     [SerializeField]  private   float  revolutions    ;
     [SerializeField]  private   bool   isClockWise=false ;
