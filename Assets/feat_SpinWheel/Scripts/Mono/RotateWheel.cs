@@ -7,12 +7,11 @@ using UnityEngine;
 public class RotateWheel : MonoBehaviour
 {
     [SerializeField] RewardsDataDTO rewardsDataDTO;
-    public static Action<int,float> rotate_Action;
+    public static Action<int,float, float> rotate_Action;
 
     public List<AnimationCurve> animationCurves;
 
 
-    private float revolutions;
     private float timer;
     private float anglePerOctant;
     private bool isSpinning;
@@ -32,9 +31,8 @@ public class RotateWheel : MonoBehaviour
         rotate_Action -= Rotate;
     }
 
-    private void Rotate(int desiredOctant, float spinTime)
+    private void Rotate(int desiredOctant, float spinTime, float revolutions)
     {
-        revolutions = 15;
         timer = 0.0f;
       
         float maxAngle = 360 * revolutions - (desiredOctant * anglePerOctant);

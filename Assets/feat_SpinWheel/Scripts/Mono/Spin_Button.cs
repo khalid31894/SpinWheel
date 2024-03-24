@@ -10,6 +10,8 @@ public class Spin_Button : MonoBehaviour, IButton
 
     [SerializeField] private int desiredOctant;
     [SerializeField] private float spinTime;
+    [SerializeField] private float revolutions;
+    [SerializeField] private bool isClokWise;
 
 
     private void Start()
@@ -19,6 +21,6 @@ public class Spin_Button : MonoBehaviour, IButton
     }
     public void OnClick()
     {
-        RotateWheel.rotate_Action(desiredOctant, spinTime);
+        RotateWheel.rotate_Action(desiredOctant, revolutions, spinTime);
     }
 }
