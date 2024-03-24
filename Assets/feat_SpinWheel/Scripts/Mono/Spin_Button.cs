@@ -8,9 +8,8 @@ public class Spin_Button : MonoBehaviour, IButton
 {
     [SerializeField] private Button button;
 
-    [SerializeField] private int number;
-    [SerializeField] private float rot;
-    [SerializeField] private float time;
+    [SerializeField] private int desiredOctant;
+    [SerializeField] private float spinTime;
 
 
     private void Start()
@@ -20,6 +19,6 @@ public class Spin_Button : MonoBehaviour, IButton
     }
     public void OnClick()
     {
-        RotateWheel.rotate_Action(number,rot,time);
+        RotateWheel.rotate_Action(desiredOctant, spinTime);
     }
 }

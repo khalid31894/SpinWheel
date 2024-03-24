@@ -41,7 +41,7 @@ public class OctantSpawner
 
         HexToColorConverter converter = new HexToColorConverter();
 
-        for (int i = 0; i < rewardsDataDTO.rewards.Length; i++)
+        for (int i = 0; i < rewardsDataDTO.rewards.Count; i++)
         {
             GameObject instantiatedOctant = GameObject.Instantiate(octantPrefab, parent);
 

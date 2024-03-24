@@ -7,27 +7,21 @@ using UnityEngine;
 public class RotateWheel : MonoBehaviour
 {
     [SerializeField] RewardsDataDTO rewardsDataDTO;
-    public static Action<int,float,float> rotate_Action;
+    public static Action<int,float> rotate_Action;
 
-    public float randomTime;
-   public  float timer;
-    public int itemNumber;
-    public float anglePerItem;
-    public bool isSpinning;
+    public List<AnimationCurve> animationCurves;
 
 
-    public List< AnimationCurve > animationCurves;
+    private float revolutions;
+    private float timer;
+    private float anglePerOctant;
+    private bool isSpinning;
 
-
-
-
-
-    Coroutine coroutine;
 
 
     private void Awake()
     {
-        anglePerItem = (float)360 /(float) rewardsDataDTO.rewards.Length;
+        anglePerOctant = (float)360 / (float)rewardsDataDTO.rewards.Count;
     }
     private void OnEnable()
     {
@@ -38,41 +32,37 @@ public class RotateWheel : MonoBehaviour
         rotate_Action -= Rotate;
     }
 
-    private void Rotate(int result, float rot, float t)
+    private void Rotate(int desiredOctant, float spinTime)
     {
-        randomTime = 15;
+        revolutions = 15;
         timer = 0.0f;
-        for(int i = 0; i <rewardsDataDTO.rewards.Length; i++)
-        {
-            if (rewardsDataDTO.rewards[i].multiplier == result)
-            {
-                itemNumber = i; break;
-            }
-
+      
+        float maxAngle = 360 * revolutions - (desiredOctant * anglePerOctant);
+        if (!isSpinning) 
+        { 
+            StartCoroutine(RotateCor(spinTime, maxAngle));
         }
-        float maxAngle = 360 * randomTime - (itemNumber * anglePerItem) + rot;
-        coroutine = StartCoroutine(RotateCor(t,maxAngle));
 
     }
 
-    IEnumerator RotateCor(float time , float maxAngle)
+    IEnumerator RotateCor(float spinTime, float maxAngle)
     {
         isSpinning = true;
         float startAngle = transform.eulerAngles.z;
         maxAngle -= startAngle;
-            int animationCurveNumber= UnityEngine.Random.Range(0, animationCurves.Count);
-        
-        while (timer<time)
+        int animationCurveIndex = UnityEngine.Random.Range(0, animationCurves.Count);
+
+        while (timer < spinTime)
         {
-            float angle = maxAngle * animationCurves[animationCurveNumber].Evaluate(timer / time);
-            transform.eulerAngles = -new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, angle + startAngle );
+            float angle = maxAngle * animationCurves[animationCurveIndex].Evaluate(timer / spinTime);
+            transform.eulerAngles = -new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, angle + startAngle);
             timer += Time.deltaTime;
-            yield return 0;
+            yield return null;
         }
 
         transform.eulerAngles = -new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, maxAngle + startAngle);
-        isSpinning= false;
+        isSpinning = false;
 
-        
+
     }
 }
