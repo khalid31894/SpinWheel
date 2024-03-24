@@ -1,14 +1,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
 using System.Threading;
 using UnityEngine;
 
 public class RotateWheel : MonoBehaviour
 {
-    [SerializeField] RewardsDataDTO rewardsDataDTO;
+    [SerializeField] private RewardsDataDTO rewardsDataDTO;
+    [SerializeField] private RewardAndMultiplier_SO rewardAndMultiplier_SO;
+
+    private UpdateUIs updateUIs;
 
     public static Action<int, float, float, bool, AnimationCurve> rotate_Action;
+
+    public static event Action OnSpinWheelComplete;
 
     private float anglePerOctant;
     private bool isSpinning;
@@ -17,16 +23,22 @@ public class RotateWheel : MonoBehaviour
     private void Awake()
     {
         anglePerOctant = 360f / rewardsDataDTO.rewards.Count;
+
+         updateUIs = new UpdateUIs(rewardsDataDTO, rewardAndMultiplier_SO);
+
     }
 
     private void OnEnable()
     {
         rotate_Action += Rotate;
+       // onComplete_Action += OnComplete;
     }
 
     private void OnDisable()
     {
         rotate_Action -= Rotate;
+        //onComplete_Action -= OnComplete;
+
     }
 
     private void Rotate(int desiredOctant, float spinTime, float revolutions, bool isClockwise, AnimationCurve curve)
@@ -36,11 +48,11 @@ public class RotateWheel : MonoBehaviour
         if (!isSpinning)
         {
             float maxAngle = revolutions * 360f + desiredOctant * anglePerOctant;
-            rotationCoroutine = StartCoroutine(RotateCor(spinTime, maxAngle, isClockwise, curve));
+            rotationCoroutine = StartCoroutine(RotateCor(desiredOctant,spinTime, maxAngle, isClockwise, curve));
         }
     }
 
-    private IEnumerator RotateCor(float spinTime, float maxAngle, bool isClockwise, AnimationCurve curve)
+    private IEnumerator RotateCor(int desiredOctant,float spinTime, float maxAngle, bool isClockwise, AnimationCurve curve)
     {
         isSpinning = true;
         float startAngle = transform.eulerAngles.z;
@@ -59,8 +71,43 @@ public class RotateWheel : MonoBehaviour
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, endAngle);
 
         isSpinning = false;
-        
 
+        OnComplete(desiredOctant);
 
     }
+
+    private void OnComplete(int desiredOctant)
+    {
+        updateUIs.Update_rewardMultiplier_SO(desiredOctant);
+        OnSpinWheelComplete?.Invoke();
+    }
+
+
+}
+
+[System. Serializable]
+public class UpdateUIs 
+{
+
+    private RewardsDataDTO rewardsDataDTO;
+    private RewardAndMultiplier_SO rewardMultiplier_SO;
+    public UpdateUIs(RewardsDataDTO rewardsDataDTO, RewardAndMultiplier_SO rewardMultiplier_SO)
+    {
+        this.rewardsDataDTO = rewardsDataDTO;
+        this.rewardMultiplier_SO = rewardMultiplier_SO;
+    }
+
+
+    
+    public void Update_rewardMultiplier_SO(int finalOctate)
+    {
+        rewardMultiplier_SO.multiplier= rewardsDataDTO.rewards[7-finalOctate].multiplier;
+        rewardMultiplier_SO.TotalScore += (rewardsDataDTO.rewards[7 - finalOctate].multiplier * rewardMultiplier_SO.TotalScore);
+
+    }
+
+    
+    
+    
+
 }
