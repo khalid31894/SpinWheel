@@ -1640,7 +1640,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7615075cd583bd2408a32b237514582f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isProbabiltyBased: 1
+  isProbabiltyBased: 0
   desiredOctant: 2
   spinTime: 5
   revolutions: 10
