@@ -48,7 +48,7 @@ public class OctantSpawner
             FillOctant fillOctant_Cach = instantiatedOctant.GetComponent<FillOctant>();
 
             fillOctant_Cach.image.color = converter.HexToColor(rewardsDataDTO.rewards[i].color);
-            fillOctant_Cach.multiplier.text = rewardsDataDTO.rewards[i].multiplier.ToString();
+            fillOctant_Cach.multiplier.text = "x"+rewardsDataDTO.rewards[i].multiplier.ToString();
             fillOctant_Cach.probability = rewardsDataDTO.rewards[i].probability;
 
             instantiatedOctant.transform.rotation = Quaternion.Euler(0, 0, i * 45);   // ---->  anglr/octant => 2pi/8 = 45 

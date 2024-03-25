@@ -40,6 +40,8 @@ public class RotateWheel : MonoBehaviour
     {
         transform.eulerAngles = new Vector3(0,0,0); //Fresh Start on every spin
 
+        desiredOctant= isClockwise? desiredOctant: 8 - desiredOctant; //for anit clockwise
+
         if (!isSpinning)
         {
             float maxAngle = revolutions * 360f + desiredOctant * anglePerOctant;

@@ -27,7 +27,7 @@ public class ProbabilityBasedOctant : MonoBehaviour
             totalProbability += reward.probability;
         }
 
-        float randomValue = UnityEngine.Random.Range(0f, totalProbability);
+        float randomValue = UnityEngine.Random.Range(0f, 1);
         float cumulativeProbability = 0f;
 
         for (int i = 0; i < rewardsDataDTO.rewards.Count; i++)

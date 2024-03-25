@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07d3e99642fdfb540873511e91ec6a67, type: 3}
   m_Name: Reward Multiplier_SO
   m_EditorClassIdentifier: 
-  multiplier: 0
-  TotalScore: 0
+  multiplier: 20
+  TotalScore: 132300
